@@ -1,4 +1,7 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { SecretValue, Stack, StackProps } from 'aws-cdk-lib';
+import { BuildSpec, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
+import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
+import { GitHubSourceAction, CodeBuildAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Construct } from 'constructs';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
@@ -6,7 +9,46 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+   const pipleline = new Pipeline(this, 'Pipeline', {
+      pipelineName:'Pipeline',
+      crossAccountKeys: false
+   });
+
+   const sourceOutput = new Artifact('SourceOutput');
+
+   //source stage connects to github and generates the sourceOutput
+   pipleline.addStage({
+      stageName: 'Source',
+      actions:[
+        new GitHubSourceAction({
+          owner: 'jgopireddy',
+          repo: 'code-pipeline',
+          branch: 'main',
+          actionName: 'Pipeline_Source',
+          oauthToken: SecretValue.secretsManager('github-token'),
+          output: sourceOutput
+        })
+      ]
+   });
+
+   const cdkBuildOutput = new Artifact('cdkBuildOutput');
+   //Build stage takes the sourceOutput, run the buidspec and generates the output
+   pipleline.addStage({
+    stageName: 'Build',
+    actions: [
+      new CodeBuildAction({
+        actionName: 'Cdk_Build',
+        input: sourceOutput,
+        outputs: [cdkBuildOutput],
+        project: new PipelineProject(this, 'CdkBuildProject',{
+          environment: {
+            buildImage: LinuxBuildImage.STANDARD_5_0
+          },
+          buildSpec: BuildSpec.fromSourceFilename('build-spec/cdk-build-spec.yml')
+        })
+      })
+    ]
+   })
 
   }
 }
