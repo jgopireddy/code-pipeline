@@ -8,7 +8,7 @@ phases:
       - npm install typescript@latest -g
   build:
     commands:
-      - echo Build started on `date`
+      - echo tsc version `tsc --version`
       - npm run build
       - npm run test
       - npm run cdk -- synth
