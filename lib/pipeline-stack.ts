@@ -23,7 +23,7 @@ export class PipelineStack extends Stack {
         new GitHubSourceAction({
           owner: 'jgopireddy',
           repo: 'code-pipeline',
-          branch: 'main',
+          branch: 'develop',
           actionName: 'Pipeline_Source',
           oauthToken: SecretValue.secretsManager('github-token'),
           output: sourceOutput
