@@ -5,6 +5,7 @@ phases:
     commands:
       - npm install -g npm
       - npm install
+      - npm run test
   build:
     commands:
       - echo Build started on `date`
