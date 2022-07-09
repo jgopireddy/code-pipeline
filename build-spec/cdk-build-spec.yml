@@ -8,8 +8,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - npm run build
-      - npm run cdk -- synth
+      - yarn run build
+      - yarn run cdk -- synth
 
 artifacts:
   base-directory: cdk.out
