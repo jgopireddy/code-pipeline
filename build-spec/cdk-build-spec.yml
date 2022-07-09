@@ -5,7 +5,7 @@ phases:
     commands:
       - npm install -g npm
       - npm install
-      - npm install typescript -g
+      - npm install typescript@latest -g
   build:
     commands:
       - echo Build started on `date`
