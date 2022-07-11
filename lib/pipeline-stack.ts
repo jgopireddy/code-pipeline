@@ -66,7 +66,7 @@ export class PipelineStack extends Stack {
           environment: {
             buildImage: LinuxBuildImage.STANDARD_5_0
           },
-          buildSpec: BuildSpec.fromSourceFilename('build-spec/service-build-spec.yml')
+          buildSpec: BuildSpec.fromSourceFilename('build-specs/service-build-spec.yml')
         })
       })
     ]
