@@ -11,7 +11,8 @@ export class PipelineStack extends Stack {
 
    const pipleline = new Pipeline(this, 'Pipeline', {
       pipelineName:'Pipeline',
-      crossAccountKeys: false
+      crossAccountKeys: false,
+      restartExecutionOnUpdate: true
    });
 
    const cdkSourceOutput = new Artifact('CDKSourceOutput');
