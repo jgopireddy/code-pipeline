@@ -8,7 +8,7 @@ export class ServiceStack extends Stack{
 
     public readonly serviceCode: CfnParametersCode;
 
-    constructor(scope: Construct, id: string, props: StackProps){
+    constructor(scope: Construct, id: string, props?: StackProps){
         super(scope, id, props);
 
         this.serviceCode = Code.fromCfnParameters();
