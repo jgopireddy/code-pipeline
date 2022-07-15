@@ -64,11 +64,16 @@ test('Add BillingStack to Stage', () =>{
   Template.fromStack(pipelineStack).hasResourceProperties(
     "AWS::CodePipeline::Pipeline",
     {
-      Actions: Match.arrayWith([
+      Stages: Match.arrayWith([
         Match.objectLike({
-          Name: 'Billing_Update'
+          Actions: Match.arrayWith([
+            Match.objectLike({
+              Name: 'Billing_Update'
+            })
+          ])
         })
       ])
+      
     }
   )
 });
